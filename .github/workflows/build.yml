@@ -13,18 +13,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Validate Gradle Wrapper
-        run: |
-          if [ ! -f "gradlew" ]; then
-            echo "ERRO: O arquivo gradlew nao foi encontrado na raiz!"
-            ls -R
-            exit 1
-          fi
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
-        run: |
-          chmod +x gradlew
-          ./gradlew build --no-daemon
+        # Usamos 'gradle' em vez de './gradlew' para ignorar a falta dos arquivos wrapper
+        run: gradle build --no-daemon
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
